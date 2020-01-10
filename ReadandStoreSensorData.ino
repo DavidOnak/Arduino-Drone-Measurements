@@ -1,5 +1,5 @@
-// last worked on March. 26, 2019 2:00pm by David and Andrew together
-//UPDATE: March. 27, 2019 8:00pm by David
+// last worked on March. 26, 2019 2:00pm by David Onak
+//UPDATE: March. 27, 2019 8:00pm by David Onak
 
 #define LED 9
 #define SWITCH 8
@@ -33,7 +33,7 @@ void setup() {
 
   //SD card status
   Serial.print("Initializing SD card...");
-  while (!SD.begin(CARD)) {//will make rapid blinks for SDcard connection error
+  while (!SD.begin(CARD)) { // will make rapid blinks for SDcard connection error
     Serial.println("initialization failed!");
     //LED indicator
     digitalWrite(LED, HIGH);
@@ -60,7 +60,7 @@ void setup() {
 void loop() {
   int switchState = digitalRead(SWITCH);
 
-  if (switchState) { //while the wire is out (enabled) *********************************************
+  if (switchState) { // while removable wire is pulled out (enabled) 
 
     //read for SD card file
     sensorData = SD.open("data.txt", FILE_WRITE);
@@ -68,7 +68,7 @@ void loop() {
     if (sensorData) { // file could be opened
 
       //check if sensor is picking up readings
-      /*if (bme.performReading()) {
+      if (bme.performReading()) {
         Serial.println(bme.temperature);
         } else {
         // Could not perform reading
@@ -79,7 +79,7 @@ void loop() {
         delay(200);
         digitalWrite(LED, LOW);
         delay(200);
-        }*/
+        }
         
       //process to add a key
       if (lastSwitchState != switchState) {
@@ -112,7 +112,7 @@ void loop() {
       Serial.println("error opening data.txt");
     }
     delay(1000);
-  } else { //while the switch is off ******************************************
+  } else { // while removable wire is not pulled out (disabled)
     Serial.println("Switch has been turned off");
     //LED indicator
     //if less than 5 seconds passed by
@@ -124,33 +124,30 @@ void loop() {
       digitalWrite(LED, LOW);
       timeOff = millis() / 1000;
     }
-
-
   }
 
   lastSwitchState = switchState;
-  /*
-    //sending readings to serial monitor
-    Serial.print("Temperature = ");
-    Serial.print(bme.temperature);
-    Serial.println(" *C");
+  
+  // serial monitor print of read data from sensors
+  Serial.print("Temperature = ");
+  Serial.print(bme.temperature);
+  Serial.println(" *C");
 
-    Serial.print("Pressure = ");
-    Serial.print(bme.pressure / 100.0);
-    Serial.println(" hPa");
+  Serial.print("Pressure = ");
+  Serial.print(bme.pressure / 100.0);
+  Serial.println(" hPa");
 
-    Serial.print("Humidity = ");
-    Serial.print(bme.humidity);
-    Serial.println(" %");
+  Serial.print("Humidity = ");
+  Serial.print(bme.humidity);
+  Serial.println(" %");
 
-    Serial.print("Gas = ");
-    Serial.print(bme.gas_resistance / 1000.0);
-    Serial.println(" KOhms");
-  */
-  /*
-    Serial.print("Approx. Altitude = ");
-    Serial.print(bme.readAltitude(SEALEVELPRESSURE_HPA));
-    Serial.println(" m");*/
+  Serial.print("Gas = ");
+  Serial.print(bme.gas_resistance / 1000.0);
+  Serial.println(" KOhms");
+
+  Serial.print("Approx. Altitude = ");
+  Serial.print(bme.readAltitude(SEALEVELPRESSURE_HPA));
+  Serial.println(" m");
 
   Serial.println();
 }
